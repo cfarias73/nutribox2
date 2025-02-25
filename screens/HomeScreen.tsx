@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import * as FileSystem from 'expo-file-system';
 import { useHistory } from '../hooks/useHistory';
+import { useSubscription } from '../hooks/useSubscription';
 
 // RapidAPI endpoint and headers
 const API_URL = 'https://dietagram.p.rapidapi.com/apiFoodImageRecognition.php';
@@ -18,6 +19,7 @@ export default function HomeScreen({ navigation }) {
   const [image, setImage] = useState<string | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
   const { addToHistory } = useHistory();
+  const { canAnalyzeMore, incrementDailyQuota, remainingAnalyses, purchaseSubscription } = useSubscription();
 
   const ensureDirectoryExists = async () => {
     const directory = `${FileSystem.cacheDirectory}nutribox-images/`;
@@ -107,6 +109,53 @@ export default function HomeScreen({ navigation }) {
   };
 
   const analyzeImage = async (uri: string) => {
+    if (!canAnalyzeMore()) {
+      Alert.alert(
+        'Daily Limit Reached',
+        'You have reached your daily limit of free analyses. Would you like to upgrade to Premium for $10/month and get 5 analyses per day?',
+        [
+          {
+            text: 'Maybe Later',
+            style: 'cancel'
+          },
+          {
+            text: 'Upgrade to Premium',
+            onPress: async () => {
+              try {
+                const success = await purchaseSubscription();
+                if (success) {
+                  Alert.alert(
+                    'Premium Activated',
+                    'Thank you for upgrading! You now have 5 analyses per day.',
+                    [{ text: 'OK', onPress: () => {
+                      // Clear the current image and reset the state
+                      setImage(null);
+                      // Return to home screen state
+                      navigation.navigate('Home');
+                    }}]
+                  );
+                } else {
+                  Alert.alert(
+                    'Upgrade Failed',
+                    'Please try again later.',
+                    [{ text: 'OK' }]
+                  );
+                }
+              } catch (error) {
+                console.error('Error during premium upgrade:', error);
+                Alert.alert(
+                  'Error',
+                  'An error occurred during the upgrade process. Please try again.',
+                  [{ text: 'OK' }]
+                );
+              }
+            }
+          }
+        ]
+      );
+      return;
+    }
+
     try {
       setAnalyzing(true);
 
@@ -130,6 +179,8 @@ export default function HomeScreen({ navigation }) {
       }
   
       const prediction = await apiResponse.json();
+      // Increment quota after successful analysis
+      await incrementDailyQuota();
       // Save to history
       addToHistory(prediction, uri);
       // Navigate to Result screen with the prediction data and image URI
@@ -178,6 +229,10 @@ export default function HomeScreen({ navigation }) {
         {analyzing && (
           <Text style={styles.analyzing}>Analyzing image...</Text>
         )}
+        
+        <Text style={styles.quotaText}>
+          Remaining free analyses today: {remainingAnalyses}
+        </Text>
       </View>
     </ScrollView>
   );
@@ -255,5 +310,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 16,
     color: '#666',
+  },
+  quotaText: {
+    marginTop: 15,
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
   },
 });

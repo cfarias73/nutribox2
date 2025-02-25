@@ -1,0 +1,6 @@
+module Pods_Nutribox {
+  umbrella header "Pods-Nutribox-umbrella.h"
+
+  export *
+  module * { export * }
+}

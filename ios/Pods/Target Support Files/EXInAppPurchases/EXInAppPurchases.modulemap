@@ -1,0 +1,6 @@
+module EXInAppPurchases {
+  umbrella header "EXInAppPurchases-umbrella.h"
+
+  export *
+  module * { export * }
+}
