@@ -27,6 +27,22 @@ export default function AppNavigator() {
           },
           tabBarActiveTintColor: '#ce73f8',
           tabBarInactiveTintColor: 'gray',
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#f0d0ff',
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 2,
+              height: 4,
+            },
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+            elevation: 8
+          },
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            color: '#333',
+          }
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen} />

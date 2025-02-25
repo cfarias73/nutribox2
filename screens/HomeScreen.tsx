@@ -202,7 +202,7 @@ export default function HomeScreen({ navigation }) {
           <Image source={{ uri: image }} style={styles.image} />
         ) : (
           <View style={styles.imagePlaceholder}>
-            <Text style={styles.placeholderText}>Coloque la imagen aquí</Text>
+            <Text style={styles.placeholderText}>Upload a clear image with all foods visible for better analysis</Text>
           </View>
         )}
     
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 20,
-    paddingTop: 80,
+    paddingTop: 0,
     width: '100%',
     minHeight: '100%',
   },
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ce73f8',
   },
   button: {
-    backgroundColor: '#ce73f8',
+    backgroundColor: '#e2aefa',
     padding: 15,
     borderRadius: 10,
     width: '45%',
@@ -299,10 +299,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f8f8f8',
-    marginTop: 20,
+    marginTop: 50,
+    marginBottom: 20,
+    padding: 20,
   },
   placeholderText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#666',
     textAlign: 'center',
   },

@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SUBSCRIPTION_KEY = '@nutribox_subscription';
 const DAILY_QUOTA_KEY = '@nutribox_daily_quota';
-const FREE_DAILY_LIMIT = 2;
+const FREE_DAILY_LIMIT = 1;
 const PREMIUM_DAILY_LIMIT = 5;
 
 export const useSubscription = () => {
