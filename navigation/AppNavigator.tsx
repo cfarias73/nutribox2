@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
 import ResultScreen from '../screens/ResultScreen';
+import HistoryScreen from '../screens/HistoryScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,6 +19,8 @@ export default function AppNavigator() {
               iconName = focused ? 'camera' : 'camera-outline';
             } else if (route.name === 'Result') {
               iconName = focused ? 'analytics' : 'analytics-outline';
+            } else if (route.name === 'History') {
+              iconName = focused ? 'time' : 'time-outline';
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -28,6 +31,7 @@ export default function AppNavigator() {
       >
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Result" component={ResultScreen} />
+        <Tab.Screen name="History" component={HistoryScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );

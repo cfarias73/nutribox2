@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import * as FileSystem from 'expo-file-system';
+import { useHistory } from '../hooks/useHistory';
 
 // RapidAPI endpoint and headers
 const API_URL = 'https://dietagram.p.rapidapi.com/apiFoodImageRecognition.php';
@@ -16,6 +17,7 @@ const headers = {
 export default function HomeScreen({ navigation }) {
   const [image, setImage] = useState<string | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
+  const { addToHistory } = useHistory();
 
   const ensureDirectoryExists = async () => {
     const directory = `${FileSystem.cacheDirectory}nutribox-images/`;
@@ -128,6 +130,8 @@ export default function HomeScreen({ navigation }) {
       }
   
       const prediction = await apiResponse.json();
+      // Save to history
+      addToHistory(prediction, uri);
       // Navigate to Result screen with the prediction data and image URI
       navigation.navigate('Result', { prediction, imageUri: uri });
     } catch (error) {
@@ -167,7 +171,7 @@ export default function HomeScreen({ navigation }) {
           style={[styles.button, styles.analyzeButton]} 
           onPress={() => image && analyzeImage(image)}
         >
-          <Text style={styles.buttonText}>Analizar Imagen</Text>
+          <Text style={styles.buttonText}>Analyze Image</Text>
           <Ionicons name="analytics-outline" size={24} color="#fff" style={styles.buttonIcon} />
         </TouchableOpacity>
     
@@ -193,11 +197,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
-    marginVertical: 20,
+    marginVertical: 10,
   },
   analyzeButton: {
     width: '100%',
-    marginTop: 10,
+    marginTop: 5,
     backgroundColor: '#ce73f8',
   },
   button: {

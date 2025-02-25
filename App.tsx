@@ -1,8 +1,15 @@
 import AppNavigator from './navigation/AppNavigator';
 import { StyleSheet } from 'react-native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 export default function App() {
-  return <AppNavigator />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppNavigator />
+    </QueryClientProvider>
+  );
 }
 
 const styles = StyleSheet.create({
