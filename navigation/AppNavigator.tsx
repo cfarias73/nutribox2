@@ -22,7 +22,7 @@ export default function AppNavigator() {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#007AFF',
+          tabBarActiveTintColor: '#ce73f8',
           tabBarInactiveTintColor: 'gray',
         })}
       >

@@ -40,10 +40,10 @@ const styles = StyleSheet.create({
   analyzeButton: {
     width: '100%',
     marginTop: 10,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ce73f8',
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ce73f8',
     padding: 15,
     borderRadius: 10,
     width: '45%',
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   nutrientValue: {
     fontSize: 16,
-    color: '#007AFF',
+    color: '#ce73f8',
     fontWeight: '600',
     textAlign: 'right',
     flex: 1,
@@ -143,12 +143,12 @@ const styles = StyleSheet.create({
   caloriesValue: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#007AFF',
+    color: '#ce73f8',
   },
   caloriesText: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: '#007AFF',
+    color: '#ce73f8',
   },
 });

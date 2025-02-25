@@ -128,8 +128,8 @@ export default function HomeScreen({ navigation }) {
       }
   
       const prediction = await apiResponse.json();
-      // Navigate to Result screen with the prediction data
-      navigation.navigate('Result', { prediction });
+      // Navigate to Result screen with the prediction data and image URI
+      navigation.navigate('Result', { prediction, imageUri: uri });
     } catch (error) {
       console.error('Error analyzing image:', error);
       alert('Error analyzing image. Please try again.');
@@ -198,10 +198,10 @@ const styles = StyleSheet.create({
   analyzeButton: {
     width: '100%',
     marginTop: 10,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ce73f8',
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ce73f8',
     padding: 15,
     borderRadius: 10,
     width: '45%',
