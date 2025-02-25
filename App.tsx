@@ -65,7 +65,6 @@ export default function App() {
         });
         
         setImage(newUri);
-        analyzeImage(newUri);
       }
     } catch (error) {
       console.error('Error in pickImage:', error);
@@ -105,7 +104,6 @@ export default function App() {
         });
         
         setImage(newUri);
-        analyzeImage(newUri);
       }
     } catch (error) {
       console.error('Error in takePhoto:', error);
@@ -113,7 +111,6 @@ export default function App() {
     }
   };
 
-  // Inside analyzeImage function
   const analyzeImage = async (uri: string) => {
     try {
       setAnalyzing(true);
@@ -190,6 +187,14 @@ export default function App() {
             <Ionicons name="images-outline" size={24} color="#fff" style={styles.buttonIcon} />
           </TouchableOpacity>
         </View>
+
+        <TouchableOpacity 
+          style={[styles.button, styles.analyzeButton]} 
+          onPress={() => image && analyzeImage(image)}
+        >
+          <Text style={styles.buttonText}>Analizar Imagen</Text>
+          <Ionicons name="analytics-outline" size={24} color="#fff" style={styles.buttonIcon} />
+        </TouchableOpacity>
     
         {analyzing && (
           <Text style={styles.analyzing}>Analyzing image...</Text>
@@ -197,17 +202,21 @@ export default function App() {
     
         {result && (
           <View style={styles.resultWrapper}>
-            {result.split('\n').map((line, index) => {
-              if (line.startsWith('Calories:')) {
-                return (
-                  <View key={index} style={styles.caloriesCard}>
-                    <Text style={styles.caloriesLabel}>Calories</Text>
-                    <Text style={styles.caloriesValue}>{line.split(': ')[1]}</Text>
-                  </View>
-                );
-              }
-              return null;
-            })}
+            {(() => {
+              const totalCalories = result.split('\n')
+                .filter(line => line.startsWith('Calories:'))
+                .reduce((sum, line) => {
+                  const calories = parseInt(line.split(': ')[1]);
+                  return sum + (isNaN(calories) ? 0 : calories);
+                }, 0);
+    
+              return (
+                <View key="total-calories" style={styles.caloriesCard}>
+                  <Text style={styles.caloriesLabel}>Total Calories</Text>
+                  <Text style={styles.caloriesValue}>{totalCalories} kcal</Text>
+                </View>
+              );
+            })()}
             <View style={styles.resultContainer}>
               {result.split('\n').map((line, index) => {
                 if (!line.startsWith('Calories:') && line.includes(':') && line.trim() !== '') {
@@ -264,6 +273,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     width: '100%',
     marginVertical: 20,
+  },
+  analyzeButton: {
+    width: '100%',
+    marginTop: 10,
+    backgroundColor: '#007AFF',
   },
   button: {
     backgroundColor: '#007AFF',
